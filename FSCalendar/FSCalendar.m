@@ -144,7 +144,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 - (void)initialize
-{   
+{
     _appearance = [[FSCalendarAppearance alloc] init];
     _appearance.calendar = self;
     
@@ -572,7 +572,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [self.delegateProxy calendarCurrentPageDidChange:self];
             [self didChangeValueForKey:@"currentPage"];
         }
-        
     } else if (self.hasValidateVisibleLayout) {
         CGFloat scrollOffset = 0;
         switch (_collectionViewLayout.scrollDirection) {
@@ -609,29 +608,61 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     
     NSInteger sections = lrint(targetOffset/contentSize);
-    NSDate *targetPage = nil;
+    NSDate *targetMinimumPage = nil;
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *minimumPage = [self.gregorian fs_firstDayOfMonth:_minimumDate];
-            targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:sections toDate:minimumPage options:0];
+            targetMinimumPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:sections toDate:minimumPage options:0];
             break;
         }
         case FSCalendarScopeWeek: {
             NSDate *minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
-            targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:sections toDate:minimumPage options:0];
+            targetMinimumPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:sections toDate:minimumPage options:0];
             break;
         }
     }
-    BOOL shouldTriggerPageChange = [self isDateInDifferentPage:targetPage];
+    
+    [self scrollViewEndPageReached:scrollView withTarget:targetMinimumPage targetContentOffset:targetContentOffset];
+    
+    BOOL shouldTriggerPageChange = [self isDateInDifferentPage:targetMinimumPage];
     if (shouldTriggerPageChange) {
         NSDate *lastPage = _currentPage;
         [self willChangeValueForKey:@"currentPage"];
-        _currentPage = targetPage;
+        _currentPage = targetMinimumPage;
         [self.delegateProxy calendarCurrentPageDidChange:self];
         if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows) {
             [self.transitionCoordinator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
         }
         [self didChangeValueForKey:@"currentPage"];
+    }
+}
+
+- (void)scrollViewEndPageReached:(UIScrollView *)scrollView withTarget:(NSDate *)targetMinimumPage targetContentOffset:(inout CGPoint *)targetContentOffset {
+    NSDate *minimumPage = nil;
+    NSDate *maximumPage = nil;
+
+    switch (_scope) {
+        case FSCalendarScopeMonth: {
+            minimumPage = [self.gregorian fs_firstDayOfMonth:_minimumDate];
+            maximumPage = [self.gregorian fs_firstDayOfMonth:_maximumDate];
+        }
+        case FSCalendarScopeWeek: {
+            minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
+            maximumPage = [self.gregorian fs_firstDayOfWeek:_maximumDate];
+        }
+    }
+    if (targetContentOffset->x > scrollView.contentOffset.x) {
+        BOOL isCurrentPageEndPage = ![self isDateInDifferentPage:minimumPage] && ![self isDateInDifferentPage:targetMinimumPage];
+        if (isCurrentPageEndPage) {
+            [self.delegateProxy calendarEndPageReached: FSCalendarPastEnd];
+        }
+    }
+    
+    if (targetContentOffset->x < scrollView.contentOffset.x) {
+        BOOL isCurrentPageEndPage = ![self isDateInDifferentPage:maximumPage] && ![self isDateInDifferentPage: targetMinimumPage];
+        if (isCurrentPageEndPage) {
+            [self.delegateProxy calendarEndPageReached: FSCalendarFutureEnd];
+        }
     }
     
 }
@@ -1475,7 +1506,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     if (cell) {
         cell.selected = YES;
-        if (self.collectionView.allowsMultipleSelection) {   
+        if (self.collectionView.allowsMultipleSelection) {
             [self.collectionView selectItemAtIndexPath:[self.collectionView indexPathForCell:cell] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         }
     }
