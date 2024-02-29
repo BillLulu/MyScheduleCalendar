@@ -2,17 +2,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "MyScheduleCalendar",
+    name: "FSCalendar",
     platforms: [.iOS(.v9)],
     products: [
         .library(
-            name: "MyScheduleCalendar",
-            targets: ["MyScheduleCalendar"]
+            name: "FSCalendar",
+            targets: ["FSCalendar"]
         ),
     ],
     targets: [
         .target(
-            name: "MyScheduleCalendar",
+            name: "FSCalendar",
             dependencies: [],
             path: "FSCalendar/",
             exclude: ["Info.plist"]
