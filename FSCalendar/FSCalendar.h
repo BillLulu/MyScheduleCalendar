@@ -33,6 +33,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarScope) {
     FSCalendarScopeWeek
 };
 
+typedef NS_ENUM(NSUInteger, FSCalendarEnd) {
+    FSCalendarPastEnd,
+    FSCalendarFutureEnd
+};
+
 typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
     FSCalendarScrollDirectionVertical,
     FSCalendarScrollDirectionHorizontal
