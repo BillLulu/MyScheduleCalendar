@@ -643,8 +643,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            minimumPage = [self.gregorian fs_firstDayOfMonth:_minimumDate];
-            maximumPage = [self.gregorian fs_firstDayOfMonth:_maximumDate];
+            minimumPage = _minimumDate;
+            maximumPage = _maximumDate;
         }
         case FSCalendarScopeWeek: {
             minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
