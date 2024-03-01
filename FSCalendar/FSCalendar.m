@@ -645,10 +645,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarScopeMonth: {
             minimumPage = _minimumDate;
             maximumPage = _maximumDate;
+            break;
         }
         case FSCalendarScopeWeek: {
             minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
             maximumPage = [self.gregorian fs_firstDayOfWeek:_maximumDate];
+            break;
         }
     }
     if (targetContentOffset->x > scrollView.contentOffset.x) {
