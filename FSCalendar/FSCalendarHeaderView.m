@@ -156,7 +156,7 @@
     FSCalendarAppearance *appearance = self.calendar.appearance;
     cell.titleLabel.font = appearance.headerTitleFont;
     cell.titleLabel.textColor = appearance.headerTitleColor;
-    cell.titleLabel.textAlignment = appearance.headerTitleAlignment; 
+    cell.titleLabel.textAlignment = appearance.headerTitleAlignment;
     _calendar.formatter.dateFormat = appearance.headerDateFormat;
     NSString *text = nil;
     switch (self.calendar.transitionCoordinator.representingScope) {
@@ -167,6 +167,8 @@
                     text = nil;
                 } else {
                     NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item-1 toDate:self.calendar.minimumDate options:0];
+                    BOOL thisYear = [[NSCalendar currentCalendar] isDate: date equalToDate:[NSDate date] toUnitGranularity:NSCalendarUnitYear];
+                    _calendar.formatter.dateFormat = (thisYear) ? @"MMMM" : @"MMMM yyyy";
                     text = [_calendar.formatter stringFromDate:date];
                 }
             } else {
@@ -181,6 +183,8 @@
             } else {
                 NSDate *firstPage = [self.calendar.gregorian fs_middleDayOfWeek:self.calendar.minimumDate];
                 NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
+                BOOL thisYear = [[NSCalendar currentCalendar] isDate: date equalToDate:[NSDate date] toUnitGranularity:NSCalendarUnitYear];
+                _calendar.formatter.dateFormat = (thisYear) ? @"MMMM" : @"MMMM yyyy";
                 text = [_calendar.formatter stringFromDate:date];
             }
             break;
