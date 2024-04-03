@@ -185,7 +185,18 @@
                 NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
                 BOOL thisYear = [[NSCalendar currentCalendar] isDate: date equalToDate:[NSDate date] toUnitGranularity:NSCalendarUnitYear];
                 _calendar.formatter.dateFormat = (thisYear) ? @"MMMM" : @"MMMM yyyy";
-                text = [_calendar.formatter stringFromDate:date];
+                if (self.isListView) {
+                    NSDate *firstDayOfWeek = [self.calendar.gregorian fs_firstDayOfWeek:self.calendar.minimumDate];
+                    NSDate *firstDateOfCurrentWeek = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstDayOfWeek options:0];
+                    NSDate *secondDayOfWeek = [self.calendar.gregorian fs_lastDayOfWeek:self.calendar.minimumDate];
+                    NSDate *secondDateOfCurrentWeek = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:secondDayOfWeek options:0];
+                    _calendar.formatter.dateFormat = @"MMM dd";
+                    NSString *firstDate = [_calendar.formatter stringFromDate:firstDateOfCurrentWeek];
+                    NSString *secondDate = [_calendar.formatter stringFromDate:secondDateOfCurrentWeek];
+                    text = [NSString stringWithFormat:@"%@ - %@", firstDate, secondDate];
+                } else {
+                    text = [_calendar.formatter stringFromDate:date];
+                }
             }
             break;
         }

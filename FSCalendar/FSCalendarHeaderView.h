@@ -18,6 +18,7 @@
 
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
 @property (assign, nonatomic) BOOL scrollEnabled;
+@property (assign, nonatomic) BOOL isListView;
 
 - (void)setScrollOffset:(CGFloat)scrollOffset;
 - (void)setScrollOffset:(CGFloat)scrollOffset animated:(BOOL)animated;
