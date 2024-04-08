@@ -274,7 +274,7 @@
         coordinate.row;
     });
     attributes.targetPage = ({
-        NSDate *targetPage = targetScope == FSCalendarScopeMonth ? [self.calendar.gregorian fs_firstDayOfMonth:attributes.focusedDate] : [self.calendar.gregorian fs_middleDayOfWeek:attributes.focusedDate];
+        NSDate *targetPage = targetScope == FSCalendarScopeMonth ? [self.calendar.gregorian fs_firstDayOfMonth:attributes.focusedDate] : [self.calendar.gregorian fs_firstDayOfWeek:attributes.focusedDate];
         targetPage;
     });
     attributes.targetBounds = [self boundingRectForScope:attributes.targetScope page:attributes.targetPage];
