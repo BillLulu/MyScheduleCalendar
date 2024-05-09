@@ -1070,7 +1070,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate
 {
-    [self selectDate:date scrollToDate:scrollToDate atMonthPosition:FSCalendarMonthPositionCurrent];
+    [self selectDate:date scrollToDate:scrollToDate animated:YES atMonthPosition:FSCalendarMonthPositionCurrent];
+}
+
+- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate animated:(BOOL)animated
+{
+    [self selectDate:date scrollToDate:scrollToDate animated: animated atMonthPosition:FSCalendarMonthPositionCurrent];
 }
 
 - (void)deselectDate:(NSDate *)date
@@ -1090,7 +1095,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
-- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate atMonthPosition:(FSCalendarMonthPosition)monthPosition
+- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate animated:(BOOL)animated atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     if (!self.allowsSelection || !date) return;
         
@@ -1154,7 +1159,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (!shouldSelect) {
             return;
         }
-        [self scrollToPageForDate:targetDate animated:YES];
+        [self scrollToPageForDate:targetDate animated:animated];
     }
 }
 
