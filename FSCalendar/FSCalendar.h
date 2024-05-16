@@ -419,6 +419,11 @@ IB_DESIGNABLE
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
 
 /**
+ The header touch object
+ */
+@property (weak, nonatomic) FSCalendarHeaderTouchDeliver *deliver;
+
+/**
  Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;
