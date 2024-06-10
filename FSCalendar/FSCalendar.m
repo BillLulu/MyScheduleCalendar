@@ -1163,7 +1163,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)handleScopeGesture:(UIPanGestureRecognizer *)sender
 {
-    if (self.floatingMode) return;
+    if (self.floatingMode || self.calendarHeaderView.isListView) return;
     [self.transitionCoordinator handleScopeGesture:sender];
 }
 
