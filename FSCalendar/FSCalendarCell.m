@@ -252,6 +252,29 @@
 
 }
 
+- (UIColor *)colorForTitleCurrentStateInDictionary:(NSDictionary *)dictionary
+{
+    if (self.isSelected) {
+        if (self.dateIsToday) {
+            return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
+        }
+        return dictionary[@(FSCalendarCellStateSelected)];
+    }
+    if (self.dateIsToday && [[dictionary allKeys] containsObject:@(FSCalendarCellStateToday)]) {
+        if (self.placeholder && [[dictionary allKeys] containsObject:@(FSCalendarCellStatePlaceholder)]) {
+            return dictionary[@(FSCalendarCellStatePlaceholder)];
+        }
+        return dictionary[@(FSCalendarCellStateToday)];
+    }
+    if (self.placeholder && [[dictionary allKeys] containsObject:@(FSCalendarCellStatePlaceholder)]) {
+        return dictionary[@(FSCalendarCellStatePlaceholder)];
+    }
+    if (self.weekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
+        return dictionary[@(FSCalendarCellStateWeekend)];
+    }
+    return dictionary[@(FSCalendarCellStateNormal)];
+}
+
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
     if (self.isSelected) {
@@ -285,9 +308,9 @@
 - (UIColor *)colorForTitleLabel
 {
     if (self.selected) {
-        return self.preferredTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
+        return self.preferredTitleSelectionColor ?: [self colorForTitleCurrentStateInDictionary:_appearance.titleColors];
     }
-    return self.preferredTitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    return self.preferredTitleDefaultColor ?: [self colorForTitleCurrentStateInDictionary:_appearance.titleColors];
 }
 
 - (UIColor *)colorForSubtitleLabel
