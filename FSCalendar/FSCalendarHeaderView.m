@@ -190,7 +190,7 @@
                     NSDate *firstDateOfCurrentWeek = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstDayOfWeek options:0];
                     NSDate *secondDayOfWeek = [self.calendar.gregorian fs_lastDayOfWeek:self.calendar.minimumDate];
                     NSDate *secondDateOfCurrentWeek = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:secondDayOfWeek options:0];
-                    _calendar.formatter.dateFormat = @"MMM dd";
+                    _calendar.formatter.dateFormat = @"MMM d";
                     NSString *firstDate = [_calendar.formatter stringFromDate:firstDateOfCurrentWeek];
                     NSString *secondDate = [_calendar.formatter stringFromDate:secondDateOfCurrentWeek];
                     text = [NSString stringWithFormat:@"%@ - %@", firstDate, secondDate];
